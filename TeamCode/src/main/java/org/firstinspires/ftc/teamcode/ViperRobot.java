@@ -8,7 +8,7 @@ import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.NextRobot;
 
 public class ViperRobot implements NextRobot {
-    Chassis chassis = new Chassis();
+    public Chassis chassis = new Chassis();
 
     @Override
     public Set<Mechanism> getMechanisms(){

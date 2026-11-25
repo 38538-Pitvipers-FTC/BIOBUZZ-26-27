@@ -20,7 +20,7 @@ public class Intake implements Mechanism {
     );
 
     public enum IntakeState {
-        FORWARD, REVERSE, OFF, CALIBRATION
+        FORWARD, REVERSE, OFF, CALIBRATION // calib to be implemented later
     }
 
     // constants
