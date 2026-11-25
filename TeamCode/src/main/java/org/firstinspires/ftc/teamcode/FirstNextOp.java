@@ -16,11 +16,11 @@ public class FirstNextOp extends NextOpMode {
 
     @Override
     public void start() {
-        robot.chassis.initImu(new RevHubOrientationOnRobot(
+        robot.chassis.initPinpoint(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD
         ));
 
-        robot.chassis.startDriveFieldCentric(gamepad1);
+        robot.chassis.startDrive(gamepad1); // starts a robot centric drive
     }
 }

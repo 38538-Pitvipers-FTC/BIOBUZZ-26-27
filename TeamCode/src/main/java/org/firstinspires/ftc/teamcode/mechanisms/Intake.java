@@ -2,19 +2,28 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.pedropathing.ivy.Command;
 
+import org.firstinspires.ftc.teamcode.data.Config;
+
 import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.hardware.actuators.NextServo;
 import dev.nextftc.robot.Mechanism;
 
 public class Intake implements Mechanism {
-    private final NextMotor intakeMotor = new NextMotor("intakeMotor");
-    private final NextServo rampServo = new NextServo("rampServo"); // to be implemented later
+    // hardware components
+    private final NextMotor intakeMotor = new NextMotor(
+            Config.intakeMotorModule,
+            Config.intakeMotorPort
+    );
+    private final NextServo rampServo = new NextServo(
+            Config.intakeRampServoModule,
+            Config.intakeRampServoPort
+    );
 
     public enum IntakeState {
         FORWARD, REVERSE, OFF, CALIBRATION
     }
 
-
+    // constants
     private final double FORWARD_POWER = 1.0;
     private final double REVERSE_POWER = -1.0;
     private final double OFF_POWER = 0.0;
@@ -22,6 +31,7 @@ public class Intake implements Mechanism {
     private final double RAMP_UP_POS = 0.0;
     private final double RAMP_DOWN_POS = 1.0;
 
+    // variables used throughout code
     private IntakeState intakeState = IntakeState.OFF;
     private double currentPower;
     private double rampPosition;
@@ -76,6 +86,10 @@ public class Intake implements Mechanism {
         }
     }
 
+    // getters
+    public IntakeState getIntakeState(){
+        return this.intakeState;
+    }
 
     @Override
     public void periodic(){

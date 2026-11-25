@@ -2,38 +2,44 @@ package org.firstinspires.ftc.teamcode.mechanisms;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.IMU;
+
+import org.firstinspires.ftc.teamcode.data.Alliance;
+import org.firstinspires.ftc.teamcode.data.Config;
+
+import java.util.function.Supplier;
 
 import dev.nextftc.hardware.actuators.NextMotor;
-import dev.nextftc.hardware.sensors.NextIMU;
+import dev.nextftc.hardware.sensors.NextPinpoint;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.drive.DriveCommands;
 
 public class Chassis implements Mechanism {
-    public final NextMotor frontLeft = new NextMotor("frontLeft");
-    public final NextMotor frontRight = new NextMotor("frontRight");
-    public final NextMotor backLeft = new NextMotor("backLeft");
-    public final NextMotor backRight = new NextMotor("backRight");
+    public final NextMotor frontLeft = new NextMotor(Config.frontLeft);
+    public final NextMotor frontRight = new NextMotor(Config.frontRight);
+    public final NextMotor backLeft = new NextMotor(Config.backLeft);
+    public final NextMotor backRight = new NextMotor(Config.backRight);
 
-    public final NextIMU imu = new NextIMU("imu");
+    public final NextPinpoint pinpoint = new NextPinpoint("pinpoint"); // TODO get switched to pinpoint
 
     public Chassis() {
         frontLeft.setDirection(NextMotor.Direction.REVERSE);
         backLeft.setDirection(NextMotor.Direction.REVERSE);
     }
 
-    public void initImu(RevHubOrientationOnRobot orientation) {
-        imu.initialize(new IMU.Parameters(orientation));
+    public void initPinpoint(RevHubOrientationOnRobot orientation) {
+        pinpoint.resetPosAndIMU();
     }
 
-    public void startDriveFieldCentric(Gamepad gamepad) {
+    public void startDrive(Gamepad gamepad, Supplier<Double> heading) {
+        double offset = Alliance.currentAlliance == Alliance.RED ? Math.PI / 2 : Math.PI * 1.5;
+
         DriveCommands.mecanumDriveFieldCentric(
                 frontLeft,
                 frontRight,
                 backLeft,
                 backRight,
                 gamepad,
-                imu::getYaw
+                () -> heading.get() + offset
         ).schedule();
     }
     public void startDrive(Gamepad gamepad) {
@@ -44,9 +50,5 @@ public class Chassis implements Mechanism {
                 backRight,
                 gamepad
         ).schedule();
-    }
-
-    public void resetHeading() {
-        imu.resetYaw();
     }
 }
