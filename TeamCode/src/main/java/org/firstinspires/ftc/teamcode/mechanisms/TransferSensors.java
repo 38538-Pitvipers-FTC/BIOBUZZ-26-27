@@ -30,6 +30,10 @@ public class TransferSensors implements Mechanism {
         lastLauncherBeamBreakState = false;
     }
 
+    public int getNumElements(){
+        return numElements;
+    }
+
 
     @Override
     public void periodic(){
